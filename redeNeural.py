@@ -5,6 +5,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 from connection import iniciar, dados_base
 from EndPoints_Structure_Tables import post_new_info, extrair_inf_sys, buscar_tabelas_por_coluna
+from pages.listagemdatabase import tela_estrutura
 
 components.html(
     """
@@ -22,7 +23,7 @@ components.html(
         <a href="http://localhost:8501/" target="_blank" 
         style="color:#1b5e20; text-decoration: underline;">
         Saiba mais aqui
-      </a>
+        </a>
     </div>
     """,
     height=100,
@@ -35,9 +36,15 @@ if 'colecao' not in st.session_state:
 
 
 if __name__ == "__main__":
-    st.set_page_config( page_title="ChatBot", icon=":heavy_plus_sign:")
-    st.title("Chatbot")
-    entrada = st.text_input("Digite o que deseja saber:", "")
-    extrair_inf_sys(entrada,"1",st.session_state.colecao)
-    buscar_tabelas_por_coluna(entrada, st.session_state.colecao)
-    post_new_info(entrada,st.session_state.colecao)
+    st.set_page_config( page_title="ChatBot", page_icon=":heavy_plus_sign:")
+    pagina = st.sidebar.selectbox("📚 Navegação", ["Chatbot", "Estrutura"])
+    
+    if pagina == "Chatbot":
+        st.title("Chatbot")
+        entrada = st.text_input("Digite o que deseja saber:", "")
+        extrair_inf_sys(entrada,"1",st.session_state.colecao)
+        buscar_tabelas_por_coluna(entrada, st.session_state.colecao)
+        post_new_info(entrada,st.session_state.colecao)
+    elif pagina == "Estrutura":
+        tela_estrutura()
+    
